@@ -13,6 +13,7 @@ import io.kubernetes.client.ApiClient;
 import io.kubernetes.client.ApiException;
 import io.kubernetes.client.Configuration;
 import io.kubernetes.client.apis.CoreV1Api;
+import io.kubernetes.client.models.V1ServiceList;
 import io.kubernetes.client.util.Config;
 import org.sandbox.quarkus.k8s.svc.discovery.domain.ServiceInfo;
 import org.slf4j.Logger;
@@ -36,7 +37,23 @@ public class KubernetesOfficialClientServiceLocator implements ServiceLocator {
         final CoreV1Api api = new CoreV1Api();
         final List<ServiceInfo> serviceInfo = new ArrayList<>();
         try {
-            api.listServiceForAllNamespaces(null, null, false, this.buildLabelSelectorParam(labels), null, null, null, null, null);
+
+            final V1ServiceList serviceList = api.listNamespacedService(namespace, true, null, null, null, this.buildLabelSelectorParam(labels), null, null, null, false);
+            if (serviceList != null) {
+                // TODO: safe gets
+                serviceInfo.addAll(serviceList
+                                              .getItems()
+                                              .stream()
+                                              .map(item -> {
+                                                  final ServiceInfo svc = new ServiceInfo();
+                                                  svc.setName(item.getMetadata().getName());
+                                                  svc.setUrl(String.format("http://%s:%d",
+                                                                           item.getSpec().getClusterIP(),
+                                                                           item.getSpec().getPorts().get(0).getPort()));
+                                                  svc.setLabels(item.getMetadata().getLabels());
+                                                  return svc;
+                                              }).collect(Collectors.toList()));
+            }
         } catch (ApiException e) {
             LOGGER.error("Impossible to query Kubernetes cluster", e);
             throw new RuntimeException(e);
