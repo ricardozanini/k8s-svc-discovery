@@ -31,7 +31,14 @@ public class KubernetesClientServiceLocator implements ServiceLocator {
 
     @PostConstruct
     public void setupClient() throws IOException {
-        if (hasConnectionProperties()) {
+        if (hasToken()) {
+            LOGGER.info("Trying to connect to k8s cluster using system properties: {}, {}, {}", ServiceLocatorProperties.K8S_SVC_CLUSTER_URL,
+                        ServiceLocatorProperties.K8S_SVC_CLUSTER_TOKEN,
+                        ServiceLocatorProperties.K8S_SVC_CLUSTER_VALIDATE_CERT);
+            this.apiClient = Config.fromToken(System.getProperty(ServiceLocatorProperties.K8S_SVC_CLUSTER_URL),
+                                              System.getProperty(ServiceLocatorProperties.K8S_SVC_CLUSTER_TOKEN),
+                                              Boolean.valueOf(System.getProperty(ServiceLocatorProperties.K8S_SVC_CLUSTER_VALIDATE_CERT, "false")));
+        } else if (hasCredentials()) {
             LOGGER.info("Trying to connect to k8s cluster using system properties: {}, {}, {}, {}",
                         ServiceLocatorProperties.K8S_SVC_CLUSTER_URL,
                         ServiceLocatorProperties.K8S_SVC_CLUSTER_USER,
@@ -92,9 +99,14 @@ public class KubernetesClientServiceLocator implements ServiceLocator {
         return "";
     }
 
-    protected boolean hasConnectionProperties() {
+    protected boolean hasCredentials() {
         final String url = System.getProperty(ServiceLocatorProperties.K8S_SVC_CLUSTER_URL);
         return url != null && !url.isEmpty();
+    }
+
+    protected boolean hasToken() {
+        final String token = System.getProperty(ServiceLocatorProperties.K8S_SVC_CLUSTER_TOKEN);
+        return token != null && !token.isEmpty();
     }
 
     protected void verifyClientConnection() {

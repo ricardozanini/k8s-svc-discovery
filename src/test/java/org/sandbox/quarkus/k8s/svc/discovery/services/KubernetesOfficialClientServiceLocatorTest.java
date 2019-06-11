@@ -30,7 +30,7 @@ public class KubernetesOfficialClientServiceLocatorTest {
 
     @Test
     void whenServiceIsDiscoveredOnAnUnknowEnv(ClientAndServer client) {
-        final Map<String, String> labels = Collections.singletonMap("service", "test-kieserver");
+        final Map<String, String> labels = Collections.singletonMap("application", "eap-app");
         client.when(request(String.format("/api/v1/namespaces/%s/services", KubernetesServerMockExtension.MOCK_NAMESPACE)))
               .respond(response(TestSupport.readResourceFromClasspath("/mock/responses/ocp311/serviceList.json")));
 

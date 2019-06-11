@@ -26,8 +26,7 @@ public class KubernetesServerMockExtension implements BeforeAllCallback, AfterAl
         System.setProperty(ServiceLocatorProperties.K8S_SVC_CLUSTER_URL,
                            String.format("http://%s:%d", "localhost", mockServer.getLocalPort()));
         System.setProperty(ServiceLocatorProperties.K8S_SVC_CLUSTER_VALIDATE_CERT, "false");
-        System.setProperty(ServiceLocatorProperties.K8S_SVC_CLUSTER_USER, "foo");
-        System.setProperty(ServiceLocatorProperties.K8S_SVC_CLUSTER_PWD, "bar");
+        System.setProperty(ServiceLocatorProperties.K8S_SVC_CLUSTER_TOKEN, "SyG22ufSqgRzYSaIIKpW011qsdy_-inbE4G9aw7OoN4");
     }
 
     @Override

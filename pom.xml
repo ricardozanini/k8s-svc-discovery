@@ -109,7 +109,13 @@
                   <goal>native-image</goal>
                 </goals>
                 <configuration>
+                  <additionalBuildArgs>
+                    <additionalBuildArg>--allow-incomplete-classpath</additionalBuildArg>
+                  </additionalBuildArgs>
                   <enableHttpUrlHandler>true</enableHttpUrlHandler>
+                  <enableHttpsUrlHandler>true</enableHttpsUrlHandler>
+                  <enableAllSecurityServices>true</enableAllSecurityServices>
+                  <enableJni>true</enableJni>
                 </configuration>
               </execution>
             </executions>

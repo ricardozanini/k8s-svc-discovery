@@ -22,6 +22,11 @@ public final class ServiceLocatorProperties {
      */
     public static final String K8S_SVC_CLUSTER_VALIDATE_CERT = "K8S_SVC_CLUSTER_VALIDATE_CERT";
 
+    /**
+     * Used instead of user and password authentication
+     */
+    public static final String K8S_SVC_CLUSTER_TOKEN = "K8S_SVC_CLUSTER_TOKEN";
+
     private ServiceLocatorProperties() {
 
     }
