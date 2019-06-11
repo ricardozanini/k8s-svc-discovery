@@ -11,6 +11,11 @@ public class ServiceInfo {
 
     public ServiceInfo() {}
 
+    public ServiceInfo(final String name, final String url) {
+        this.name = name;
+        this.url = url;
+    }
+
     public String getName() {
         return name;
     }

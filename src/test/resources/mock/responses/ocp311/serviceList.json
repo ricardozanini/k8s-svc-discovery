@@ -1,0 +1,97 @@
+{
+	"apiVersion": "v1",
+	"items": [
+		{
+			"apiVersion": "v1",
+			"kind": "Service",
+			"metadata": {
+				"annotations": {
+					"description": "The web server's http port.",
+					"openshift.io/generated-by": "OpenShiftNewApp"
+				},
+				"creationTimestamp": "2019-05-02T18:48:48Z",
+				"labels": {
+					"app": "eap72-basic-s2i",
+					"application": "eap-app",
+					"template": "eap72-basic-s2i",
+					"xpaas": "1.0.0"
+				},
+				"name": "eap-app",
+				"namespace": "mock-namespace",
+				"resourceVersion": "1194526",
+				"selfLink": "/api/v1/namespaces/mock-namespace/services/eap-app",
+				"uid": "eb99d2e8-6d0a-11e9-a062-080027e8c7bc"
+			},
+			"spec": {
+				"clusterIP": "172.30.66.58",
+				"ports": [
+					{
+						"port": 8080,
+						"protocol": "TCP",
+						"targetPort": 8080
+					}
+				],
+				"selector": {
+					"deploymentConfig": "eap-app"
+				},
+				"sessionAffinity": "None",
+				"type": "ClusterIP"
+			},
+			"status": {
+				"loadBalancer": {
+					
+				}
+			}
+		},
+		{
+			"apiVersion": "v1",
+			"kind": "Service",
+			"metadata": {
+				"annotations": {
+					"description": "The JGroups ping port for clustering.",
+					"openshift.io/generated-by": "OpenShiftNewApp",
+					"service.alpha.kubernetes.io/tolerate-unready-endpoints": "true"
+				},
+				"creationTimestamp": "2019-05-02T18:48:48Z",
+				"labels": {
+					"app": "eap72-basic-s2i",
+					"application": "eap-app",
+					"template": "eap72-basic-s2i",
+					"xpaas": "1.0.0"
+				},
+				"name": "eap-app-ping",
+				"namespace": "mock-namespace",
+				"resourceVersion": "1194527",
+				"selfLink": "/api/v1/namespaces/mock-namespace/services/eap-app-ping",
+				"uid": "eb9b82ac-6d0a-11e9-a062-080027e8c7bc"
+			},
+			"spec": {
+				"clusterIP": "None",
+				"ports": [
+					{
+						"name": "ping",
+						"port": 8888,
+						"protocol": "TCP",
+						"targetPort": 8888
+					}
+				],
+				"publishNotReadyAddresses": true,
+				"selector": {
+					"deploymentConfig": "eap-app"
+				},
+				"sessionAffinity": "None",
+				"type": "ClusterIP"
+			},
+			"status": {
+				"loadBalancer": {
+					
+				}
+			}
+		}
+	],
+	"kind": "List",
+	"metadata": {
+		"resourceVersion": "",
+		"selfLink": ""
+	}
+}
