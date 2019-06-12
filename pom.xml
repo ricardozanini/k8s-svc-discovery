@@ -1,26 +1,26 @@
-<?xml version="1.0"?>
-<project
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-  xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.sandbox.quarkus</groupId>
   <artifactId>k8s-svc-discovery</artifactId>
   <version>1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
   <name>Quarkus Sandbox :: Kubernetes Service Discovery</name>
   <description>Kubernetes clients playground to test client libraries with native images</description>
+  <modules>
+    <module>k8s-client-java</module>
+    <module>k8s-svc-discovery-api</module>
+  </modules>
   <properties>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
     <quarkus.version>0.16.0</quarkus.version>
-    <k8s-client.version>4.0.0</k8s-client.version>
-    <mock-server.version>5.5.4</mock-server.version>
-
     <surefire-plugin.version>2.22.0</surefire-plugin.version>
     <maven.compiler.source>1.8</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -30,8 +30,14 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      <dependency>
+        <groupId>org.sandbox.quarkus</groupId>
+        <artifactId>k8s-svc-discovery-api</artifactId>
+        <version>${project.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
+
   <dependencies>
     <dependency>
       <groupId>io.quarkus</groupId>
@@ -40,12 +46,6 @@
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-resteasy-jsonb</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.kubernetes</groupId>
-      <artifactId>client-java</artifactId>
-      <version>${k8s-client.version}</version>
-      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>com.oracle.substratevm</groupId>
@@ -62,87 +62,5 @@
       <artifactId>rest-assured</artifactId>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.mock-server</groupId>
-      <artifactId>mockserver-netty</artifactId>
-      <version>${mock-server.version}</version>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-maven-plugin</artifactId>
-        <version>${quarkus.version}</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>build</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>${surefire-plugin.version}</version>
-        <configuration>
-          <systemProperties>
-            <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
-          </systemProperties>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-  <profiles>
-    <profile>
-      <id>native</id>
-      <activation>
-        <property>
-          <name>native</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-maven-plugin</artifactId>
-            <version>${quarkus.version}</version>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>native-image</goal>
-                </goals>
-                <configuration>
-                  <additionalBuildArgs>
-                    <additionalBuildArg>--allow-incomplete-classpath</additionalBuildArg>
-                  </additionalBuildArgs>
-                  <enableHttpUrlHandler>true</enableHttpUrlHandler>
-                  <enableHttpsUrlHandler>true</enableHttpsUrlHandler>
-                  <enableJni>true</enableJni>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <artifactId>maven-failsafe-plugin</artifactId>
-            <version>${surefire-plugin.version}</version>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>integration-test</goal>
-                  <goal>verify</goal>
-                </goals>
-                <configuration>
-                  <systemProperties>
-                    <native.image.path>${project.build.directory}/${project.build.finalName}-runner</native.image.path>
-                  </systemProperties>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 </project>

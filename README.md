@@ -15,10 +15,12 @@ $ cd k8s-svc-discovery
 ./mvnw package -Pnative -Dnative-image.docker-build=true
 
 # run
-./target/k8s-svc-discovery-1.0-SNAPSHOT-runner -DK8S_SVC_CLUSTER_URL=<your cluster url> -DK8S_SVC_CLUSTER_TOKEN=$(oc whoami -t) -DK8S_SVC_CLUSTER_VALIDATE_CERT=false|true -Djava.library.path=$GRAALVM_HOME/jre/lib/amd64 -Djavax.net.ssl.trustStore=$GRAALVM_HOME/jre/lib/security/cacerts
+./k8s-client-java/target/k8s-client-java-1.0-SNAPSHOT-runner -DK8S_SVC_CLUSTER_URL=<your cluster url> -DK8S_SVC_CLUSTER_TOKEN=$(oc whoami -t) -DK8S_SVC_CLUSTER_VALIDATE_CERT=false -Djava.library.path=$GRAALVM_HOME/jre/lib/amd64 -Djavax.net.ssl.trustStore=$GRAALVM_HOME/jre/lib/security/cacerts
 ```
 
-Then go to [http://localhost:8080/services/k8sclient/<yournamespacename>](http://localhost:8080/services/k8sclient/<yournamespacename>) and you should see a list of Services deployed into the namespace. :) 
+Then go to [http://localhost:8080/services/yournamespacename](http://localhost:8080/services/yournamespacename) and you should see a list of Services deployed into the namespace. :) 
+
+(TBD) To run with Fabric8, just change the command above to `./fabric8-client-java/target/fabric8-client-java-1.0-SNAPSHOT-runner`
 
 ### Notes
 
