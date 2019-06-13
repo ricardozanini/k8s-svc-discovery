@@ -19,10 +19,10 @@ import io.kubernetes.client.models.V1SessionAffinityConfig;
 import io.kubernetes.client.models.V1Status;
 import io.kubernetes.client.models.V1StatusDetails;
 import org.graalvm.nativeimage.hosted.Feature;
-import org.graalvm.nativeimage.hosted.RuntimeReflection;
+import org.sandbox.quarkus.k8s.svc.discovery.features.RutimeReflectionRegistrationSupport;
 
 @AutomaticFeature
-public class RuntimeReflectionRegistrationFeature implements Feature {
+public class RuntimeReflectionRegistrationFeature extends RutimeReflectionRegistrationSupport implements Feature {
 
     public void beforeAnalysis(BeforeAnalysisAccess access) {
         this.registerAll(V1ServiceList.class);
@@ -44,10 +44,4 @@ public class RuntimeReflectionRegistrationFeature implements Feature {
         this.registerAll(IntOrString.IntOrStringAdapter.class);
     }
 
-    private void registerAll(Class<?> clazz) {
-        RuntimeReflection.register(clazz.getDeclaredFields());
-        RuntimeReflection.register(clazz.getDeclaredConstructors());
-        RuntimeReflection.register(clazz.getDeclaredMethods());
-        RuntimeReflection.registerForReflectiveInstantiation(clazz);
-    }
 }

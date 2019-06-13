@@ -10,5 +10,5 @@
   <artifactId>k8s-svc-discovery-api</artifactId>
   <name>Quarkus Sandbox :: Kubernetes Service Discovery :: API</name>
   <description>Base API for Kubernetes Service Discovery</description>
-  
+
 </project>

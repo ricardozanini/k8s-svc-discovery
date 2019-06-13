@@ -1,4 +1,4 @@
-package org.sandbox.quarkus.k8s.svc.discovery.official.resources;
+package org.sandbox.quarkus.k8s.svc.discovery.fabric8.resources;
 
 import java.util.List;
 

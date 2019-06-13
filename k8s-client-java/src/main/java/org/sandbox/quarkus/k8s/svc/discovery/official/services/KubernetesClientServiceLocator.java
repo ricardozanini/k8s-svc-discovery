@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 
@@ -18,20 +17,42 @@ import io.kubernetes.client.apis.CoreV1Api;
 import io.kubernetes.client.models.V1ServiceList;
 import io.kubernetes.client.util.Config;
 import org.sandbox.quarkus.k8s.svc.discovery.domain.ServiceInfo;
-import org.sandbox.quarkus.k8s.svc.discovery.services.ServiceLocator;
+import org.sandbox.quarkus.k8s.svc.discovery.services.BaseServiceLocator;
 import org.sandbox.quarkus.k8s.svc.discovery.services.ServiceLocatorProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @ApplicationScoped
 @Named("kubernetesLocator")
-public class KubernetesClientServiceLocator implements ServiceLocator {
+public class KubernetesClientServiceLocator extends BaseServiceLocator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KubernetesClientServiceLocator.class);
 
     private ApiClient apiClient;
 
-    @PostConstruct
+    protected boolean hasCredentials() {
+        final String url = System.getProperty(ServiceLocatorProperties.K8S_SVC_CLUSTER_URL);
+        return url != null && !url.isEmpty();
+    }
+
+    protected boolean hasToken() {
+        final String token = System.getProperty(ServiceLocatorProperties.K8S_SVC_CLUSTER_TOKEN);
+        return token != null && !token.isEmpty();
+    }
+
+    @Override
+    protected String getMasterURL() {
+        if (this.apiClient != null) {
+            return this.apiClient.getBasePath();
+        }
+        return "";
+    }
+
+    protected void verifyClientConnection() throws IOException {
+        final Request request = new Request.Builder().get().url(this.apiClient.getBasePath()).build();
+        this.apiClient.getHttpClient().newCall(request).execute();
+    }
+
     public void setupClient() throws IOException {
         if (hasToken()) {
             LOGGER.info("Trying to connect to k8s cluster using system properties: {}, {}, {}", ServiceLocatorProperties.K8S_SVC_CLUSTER_URL,
@@ -54,8 +75,6 @@ public class KubernetesClientServiceLocator implements ServiceLocator {
         } else {
             this.apiClient = Config.defaultClient();
         }
-
-        verifyClientConnection();
         Configuration.setDefaultApiClient(apiClient);
     }
 
@@ -86,40 +105,6 @@ public class KubernetesClientServiceLocator implements ServiceLocator {
             throw new RuntimeException(e);
         }
         return serviceInfo;
-    }
-
-    protected String buildLabelSelectorParam(final Map<String, String> labels) {
-        if (labels != null) {
-            return labels
-                         .entrySet()
-                         .stream()
-                         .map(label -> {
-                             return String.format("%s=%s", label.getKey(), label.getValue());
-                         })
-                         .collect(Collectors.joining(","));
-        }
-        return "";
-    }
-
-    protected boolean hasCredentials() {
-        final String url = System.getProperty(ServiceLocatorProperties.K8S_SVC_CLUSTER_URL);
-        return url != null && !url.isEmpty();
-    }
-
-    protected boolean hasToken() {
-        final String token = System.getProperty(ServiceLocatorProperties.K8S_SVC_CLUSTER_TOKEN);
-        return token != null && !token.isEmpty();
-    }
-
-    protected void verifyClientConnection() {
-        final Request request = new Request.Builder().get().url(this.apiClient.getBasePath()).build();
-        try {
-            this.apiClient.getHttpClient().newCall(request).execute();
-            LOGGER.info("Successfully connected to remote kubernetes cluster at {}", this.apiClient.getBasePath());
-        } catch (IOException e) {
-            LOGGER.debug("Failed to connect to Kubernetes cluster", e);
-            LOGGER.warn("Client is invalid, tried to connect to {}, got \"{}\"", this.apiClient.getBasePath(), e.getMessage());
-        }
     }
 
 }

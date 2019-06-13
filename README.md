@@ -12,22 +12,33 @@ $ git clone https://github.com/ricardozanini/k8s-svc-discovery.git
 $ cd k8s-svc-discovery
 
 # build
-./mvnw package -Pnative -Dnative-image.docker-build=true
+./mvnw clean package -Pnative
+```
 
+Having the binaries compiled, choose your destiny.
+
+**Kubernetes Official Client**
+
+```
 # run
 ./k8s-client-java/target/k8s-client-java-1.0-SNAPSHOT-runner -DK8S_SVC_CLUSTER_URL=<your cluster url> -DK8S_SVC_CLUSTER_TOKEN=$(oc whoami -t) -DK8S_SVC_CLUSTER_VALIDATE_CERT=false -Djava.library.path=$GRAALVM_HOME/jre/lib/amd64 -Djavax.net.ssl.trustStore=$GRAALVM_HOME/jre/lib/security/cacerts
 ```
 
-Then go to [http://localhost:8080/services/yournamespacename](http://localhost:8080/services/yournamespacename) and you should see a list of Services deployed into the namespace. :) 
+**Fabric8 Client**
 
-(TBD) To run with Fabric8, just change the command above to `./fabric8-client-java/target/fabric8-client-java-1.0-SNAPSHOT-runner`
+```
+# run
+./fabric8-client/target/fabric8-client-1.0-SNAPSHOT-runner -DK8S_SVC_CLUSTER_URL=<your cluster url> -DK8S_SVC_CLUSTER_TOKEN=$(oc whoami -t) -DK8S_SVC_CLUSTER_VALIDATE_CERT=false -Djava.library.path=$GRAALVM_HOME/jre/lib/amd64 -Djavax.net.ssl.trustStore=$GRAALVM_HOME/jre/lib/security/cacerts
+```
+
+Then go to [http://localhost:8080/services/yournamespacename](http://localhost:8080/services/yournamespacename) and you should see a list of Services deployed into the namespace. :) 
 
 ### Notes
 
 1. Make sure to set `K8S_SVC_CLUSTER_VALIDATE_CERT` to **`false`** if your cluster has a self signed certificate.
 2. Have the [GraalVM installed](https://gist.github.com/ricardozanini/fa65e485251913e1467837b1c5a8ed28) and the `GRAALVM_HOME` environment variable set to it's home dir.
+3. When experimenting with `k8s-client-java` you might face a similar exception like the following: `java.io.IOException: Resource not found: "org/joda/time/tz/data/America/Sao_Paulo" ClassLoader: java.lang.ClassLoader@24afc28`. It's caused by the Joda time library that the Swagger is dependent. Just ignore it for now.
 
 ## TODOs
 
-1. Create a Docker image to be deployed in a OpenShift cluster
-2. Add the Fabric8 Kubernetes client resource
+- Create a Docker image to be deployed in a OpenShift cluster
