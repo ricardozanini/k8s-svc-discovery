@@ -1,4 +1,4 @@
-package org.sandbox.quarkus.k8s.svc.discovery.services;
+package org.sandbox.quarkus.k8s.svc.discovery.fabric8.services;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;

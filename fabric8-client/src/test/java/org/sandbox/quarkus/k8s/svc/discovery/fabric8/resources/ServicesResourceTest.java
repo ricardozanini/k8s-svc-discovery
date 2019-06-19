@@ -1,4 +1,4 @@
-package org.sandbox.quarkus.k8s.svc.discovery.resources;
+package org.sandbox.quarkus.k8s.svc.discovery.fabric8.resources;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;

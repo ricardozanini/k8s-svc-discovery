@@ -12,10 +12,12 @@
     <module>k8s-client-java</module>
     <module>k8s-svc-discovery-api</module>
     <module>fabric8-client</module>
+    <module>kogito-client</module>
   </modules>
   <properties>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <quarkus.version>0.16.0</quarkus.version>
+    <fabric8.version>4.3.0</fabric8.version>
     <surefire-plugin.version>2.22.0</surefire-plugin.version>
     <maven.compiler.source>1.8</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

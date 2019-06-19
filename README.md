@@ -31,7 +31,15 @@ Having the binaries compiled, choose your destiny.
 ./fabric8-client/target/fabric8-client-1.0-SNAPSHOT-runner -DK8S_SVC_CLUSTER_URL=<your cluster url> -DK8S_SVC_CLUSTER_TOKEN=$(oc whoami -t) -DK8S_SVC_CLUSTER_VALIDATE_CERT=false -Djava.library.path=$GRAALVM_HOME/jre/lib/amd64 -Djavax.net.ssl.trustStore=$GRAALVM_HOME/jre/lib/security/cacerts
 ```
 
+**Kogito Client**
+
+```
+# run
+./kogito-client/target/kogito-client-1.0-SNAPSHOT-runner -DK8S_SVC_CLUSTER_URL=<your cluster url> -DK8S_SVC_CLUSTER_TOKEN=$(oc whoami -t) -DK8S_SVC_CLUSTER_VALIDATE_CERT=false -Djava.library.path=$GRAALVM_HOME/jre/lib/amd64
+```
+
 Then go to [http://localhost:8080/services/yournamespacename](http://localhost:8080/services/yournamespacename) and you should see a list of Services deployed into the namespace. :) 
+
 
 ### Notes
 

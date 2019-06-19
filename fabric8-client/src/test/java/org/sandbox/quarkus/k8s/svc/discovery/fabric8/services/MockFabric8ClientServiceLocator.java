@@ -1,4 +1,4 @@
-package org.sandbox.quarkus.k8s.svc.discovery.services;
+package org.sandbox.quarkus.k8s.svc.discovery.fabric8.services;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +10,7 @@ import javax.enterprise.inject.Alternative;
 import javax.inject.Named;
 
 import org.sandbox.quarkus.k8s.svc.discovery.domain.ServiceInfo;
+import org.sandbox.quarkus.k8s.svc.discovery.services.ServiceLocator;
 
 @Alternative
 @Priority(1)

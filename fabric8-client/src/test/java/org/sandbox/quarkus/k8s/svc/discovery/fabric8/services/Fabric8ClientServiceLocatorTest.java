@@ -1,4 +1,4 @@
-package org.sandbox.quarkus.k8s.svc.discovery.services;
+package org.sandbox.quarkus.k8s.svc.discovery.fabric8.services;
 
 import java.util.Collections;
 import java.util.List;
@@ -18,7 +18,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.sandbox.quarkus.k8s.svc.discovery.domain.ServiceInfo;
-import org.sandbox.quarkus.k8s.svc.discovery.mock.server.KubernetesServerMockExtension;
+import org.sandbox.quarkus.k8s.svc.discovery.fabric8.extensions.KubernetesServerMockExtension;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;

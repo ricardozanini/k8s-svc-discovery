@@ -1,4 +1,4 @@
-package org.sandbox.quarkus.k8s.svc.discovery.mock.server;
+package org.sandbox.quarkus.k8s.svc.discovery.kogito.extensions;
 
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
