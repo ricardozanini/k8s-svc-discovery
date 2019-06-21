@@ -48,8 +48,15 @@ Then go to [http://localhost:8080/services/yournamespacename](http://localhost:8
 
 ## The Docker Image
 
-### Building the Kogito Client Image
+There's a working image at:
+https://quay.io/repository/ricardozanini/kogito-svc-discovery
+
+You can run it with the following command:
 
 ```
-docker build --build-arg JAVA_LIB_PATH=$GRAALVM_HOME/jre/lib/amd64 --build-arg CACERT_FILE_PATH=$GRAALVM_HOME/jre/lib/security/cacerts  -f kogito-client/src/main/docker/Dockerfile.native -t quarkus/kogito-svc-discovery  .
+docker run -i --rm -p 8080:8080 -e KUBERNETES_MASTER=<your cluster URL> -e KUBERNETES_AUTH_TOKEN=$(oc whoami -t) -e KUBERNETES_TRUST_CERTIFICATES=true  quay.io/ricardozanini/kogito-svc-discovery
 ```
+
+### Building the Kogito Client Image
+
+There's a script ready for you at kogito-client/build-image.sh. Use it as a reference to build yours.

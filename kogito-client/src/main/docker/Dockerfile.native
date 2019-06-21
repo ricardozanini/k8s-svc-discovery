@@ -14,7 +14,7 @@
 # docker run -i --rm -p 8080:8080 quarkus/kogito-svc-discovery
 #
 ###
-FROM ubi8:8-released
+FROM registry.fedoraproject.org/fedora-minimal:latest
 WORKDIR /app/
 COPY target/*-runner /app/application
 COPY target/javalib/libsunec.so /app/library/
