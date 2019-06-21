@@ -59,4 +59,4 @@ docker run -i --rm -p 8080:8080 -e KUBERNETES_MASTER=<your cluster URL> -e KUBER
 
 ### Building the Kogito Client Image
 
-There's a script ready for you at kogito-client/build-image.sh. Use it as a reference to build yours.
+There's a script ready for you at [kogito-client/build-image.sh](kogito-client/build-image.sh). Use it as a reference to build yours.
