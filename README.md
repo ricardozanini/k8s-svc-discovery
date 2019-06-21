@@ -40,13 +40,16 @@ Having the binaries compiled, choose your destiny.
 
 Then go to [http://localhost:8080/services/yournamespacename](http://localhost:8080/services/yournamespacename) and you should see a list of Services deployed into the namespace. :) 
 
-
 ### Notes
 
 1. Make sure to set `K8S_SVC_CLUSTER_VALIDATE_CERT` to **`false`** if your cluster has a self signed certificate.
 2. Have the [GraalVM installed](https://gist.github.com/ricardozanini/fa65e485251913e1467837b1c5a8ed28) and the `GRAALVM_HOME` environment variable set to it's home dir.
 3. When experimenting with `k8s-client-java` you might face a similar exception like the following: `java.io.IOException: Resource not found: "org/joda/time/tz/data/America/Sao_Paulo" ClassLoader: java.lang.ClassLoader@24afc28`. It's caused by the Joda time library that the Swagger is dependent. Just ignore it for now.
 
-## TODOs
+## The Docker Image
 
-- Create a Docker image to be deployed in a OpenShift cluster
+### Building the Kogito Client Image
+
+```
+docker build --build-arg JAVA_LIB_PATH=$GRAALVM_HOME/jre/lib/amd64 --build-arg CACERT_FILE_PATH=$GRAALVM_HOME/jre/lib/security/cacerts  -f kogito-client/src/main/docker/Dockerfile.native -t quarkus/kogito-svc-discovery  .
+```

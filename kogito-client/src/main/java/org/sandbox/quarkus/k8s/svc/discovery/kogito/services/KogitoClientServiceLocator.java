@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 
+import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.kie.kogito.cloud.kubernetes.client.DefaultKogitoKubeClient;
@@ -23,12 +24,12 @@ public class KogitoClientServiceLocator extends BaseServiceLocator {
 
     public KogitoClientServiceLocator() {
         // map the fabric8 properties with ours, this way we can have a common usage interface among implementations
-        System.setProperty("kubernetes.master", System.getProperty("K8S_SVC_CLUSTER_URL", ""));
+        System.setProperty("kubernetes.master", Utils.getSystemPropertyOrEnvVar("K8S_SVC_CLUSTER_URL", ""));
         System.setProperty("kubernetes.trust.certificates",
-                           String.valueOf((Boolean.parseBoolean(System.getProperty("K8S_SVC_CLUSTER_VALIDATE_CERT", "false")) ? false : true)));
-        System.setProperty("kubernetes.auth.basic.username", System.getProperty("K8S_SVC_CLUSTER_USER", ""));
-        System.setProperty("kubernetes.auth.basic.password", System.getProperty("K8S_SVC_CLUSTER_PWD", ""));
-        System.setProperty("kubernetes.auth.token", System.getProperty("K8S_SVC_CLUSTER_TOKEN", ""));
+                           String.valueOf((Boolean.parseBoolean(Utils.getSystemPropertyOrEnvVar("K8S_SVC_CLUSTER_VALIDATE_CERT", "false")) ? false : true)));
+        System.setProperty("kubernetes.auth.basic.username", Utils.getSystemPropertyOrEnvVar("K8S_SVC_CLUSTER_USER", ""));
+        System.setProperty("kubernetes.auth.basic.password", Utils.getSystemPropertyOrEnvVar("K8S_SVC_CLUSTER_PWD", ""));
+        System.setProperty("kubernetes.auth.token", Utils.getSystemPropertyOrEnvVar("K8S_SVC_CLUSTER_TOKEN", ""));
     }
 
     @Override
