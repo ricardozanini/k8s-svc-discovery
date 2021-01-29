@@ -17,7 +17,7 @@
   <description>Official Kubernetes Java Client implementation</description>
 
   <properties>
-    <k8s-client.version>4.0.0</k8s-client.version>
+    <k8s-client.version>9.0.2</k8s-client.version>
     <mock-server.version>5.5.4</mock-server.version>
   </properties>
 
